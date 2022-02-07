@@ -18,30 +18,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import pt.amane.controlegestaofinanceiraapp.dtos.PessoaDTO;
-import pt.amane.controlegestaofinanceiraapp.services.PessoaService;
+import pt.amane.controlegestaofinanceiraapp.dtos.LancamentoDTO;
+import pt.amane.controlegestaofinanceiraapp.services.LancamentoService;
 
 @RestController
-@RequestMapping(value = "/pessoas")
-public class PesssoaResource {
+@RequestMapping(value = "/lancamentos")
+public class LancamentoResource {
 
 	@Autowired
-	private PessoaService service;
+	private LancamentoService service;
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<PessoaDTO> findById(@PathVariable Long id) {
-		PessoaDTO pessoaDTO = service.findById(id);
-		return ResponseEntity.ok(pessoaDTO);
+	public ResponseEntity<LancamentoDTO> findById(@PathVariable Long id) {
+		LancamentoDTO lancamentoDTO = service.findById(id);
+		return ResponseEntity.ok(lancamentoDTO);
 	}
 
 	@GetMapping
-	public ResponseEntity<List<PessoaDTO>> findAll() {
-		List<PessoaDTO> listPessoaDTOs = service.findAll();
+	public ResponseEntity<List<LancamentoDTO>> findAll() {
+		List<LancamentoDTO> listPessoaDTOs = service.findAll();
 		return ResponseEntity.ok(listPessoaDTOs);
 	}
 
 	@PostMapping
-	public ResponseEntity<PessoaDTO> create(@Valid @RequestBody PessoaDTO dto) {
+	public ResponseEntity<LancamentoDTO> create(@Valid @RequestBody LancamentoDTO dto) {
 		dto = service.create(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(dto.getId())
 				.toUri();
@@ -49,13 +49,13 @@ public class PesssoaResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<PessoaDTO> update(@Valid @RequestBody PessoaDTO dto, @PathVariable Long id){
+	public ResponseEntity<LancamentoDTO> update(@Valid @RequestBody LancamentoDTO dto, @PathVariable Long id){
 		dto = service.update(dto, id);
 		return ResponseEntity.ok(dto);
 	}
 	
 	@PatchMapping(value = "/{id}")
-	public ResponseEntity<PessoaDTO> updatePatch(@Valid @RequestBody PessoaDTO dto, @PathVariable Long id){
+	public ResponseEntity<LancamentoDTO> updatePatch(@Valid @RequestBody LancamentoDTO dto, @PathVariable Long id){
 		dto = service.update(dto, id);
 		return ResponseEntity.ok(dto);
 	}
