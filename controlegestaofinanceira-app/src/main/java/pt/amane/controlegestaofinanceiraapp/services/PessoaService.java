@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -36,7 +38,7 @@ public class PessoaService {
 		return pessoas.stream().map(obj -> new PessoaDTO(obj)).collect(Collectors.toList());
 	}
 	
-	
+	@Transactional
 	public PessoaDTO create(PessoaDTO dto) {
 		Pessoa pessoa = new Pessoa();
 		pessoa = copyPessoa(pessoa, dto);
@@ -44,11 +46,23 @@ public class PessoaService {
 		return new PessoaDTO(pessoa);		
 	}
 	
+	@Transactional
+	public PessoaDTO update(PessoaDTO dto, Long id) {
+		try {
+			@SuppressWarnings("deprecation")
+			Pessoa pessoa = repository.getOne(id);
+			pessoa = copyPessoa(pessoa, dto);
+			return new PessoaDTO(pessoa);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found! Id: " + id + ", Type: " + PessoaDTO.class.getName());
+		}
+	}
+	
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Id not foud! Id: " + id);
+			throw new ResourceNotFoundException("Id not found! Id: " + id);
 		}catch (DataIntegrityViolationException e) {
 			throw new DataBaseIntegrityViolationException("person cannot be deleted! has associated object..");
 		}
