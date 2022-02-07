@@ -33,4 +33,11 @@ public class CategoriaService {
 		return categorias.stream().map(x -> new CategoriaDTO(x)).collect(Collectors.toList());
 	}
 
+	public CategoriaDTO create(CategoriaDTO dto) {
+		Categoria categoria = new Categoria();
+		categoria.setNome(dto.getNome());
+		categoria = repository.save(categoria);
+		return new CategoriaDTO(categoria);
+	}
+
 }
