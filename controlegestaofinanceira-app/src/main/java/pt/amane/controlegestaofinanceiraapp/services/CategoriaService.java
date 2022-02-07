@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pt.amane.controlegestaofinanceiraapp.dtos.CategoriaDTO;
 import pt.amane.controlegestaofinanceiraapp.entities.Categoria;
 import pt.amane.controlegestaofinanceiraapp.repositories.CategoriaRepository;
-import pt.amane.controlegestaofinanceiraapp.services.exceptions.ObjectNotFoundException;
+import pt.amane.controlegestaofinanceiraapp.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -23,7 +23,7 @@ public class CategoriaService {
 	public CategoriaDTO findById(Long id) {
 		Optional<Categoria> catId = repository.findById(id);
 		Categoria categoria = catId.orElseThrow(
-				() -> new ObjectNotFoundException("Object not found! Id:" + id + ", Type: " + Categoria.class));
+				() -> new ResourceNotFoundException("Object not found! Id:" + id + ", Type: " + Categoria.class));
 		return new CategoriaDTO(categoria);
 	}
 
